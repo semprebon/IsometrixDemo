@@ -75,7 +75,8 @@ public class BitmapBackgroundRenderer implements Renderer {
 		if(height == 0) { 						//Prevent A Divide By Zero By
 			height = 1; 						//Making Height Equal One
 		}
-		background = new Background(context, gl, width, height);
+		background = new Background(context, gl, width, height,
+				new int[] { R.drawable.green_tile, R.drawable.grey_tile });
 		
 		gl.glViewport(0, 0, width, height); 	//Reset The Current Viewport
         gl.glMatrixMode(GL10.GL_PROJECTION); 	//Select The Projection Matrix

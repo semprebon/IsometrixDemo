@@ -3,6 +3,7 @@ package com.nimbusly.isometrix.demo;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.nimbusly.isometrix.GameRenderer;
 import com.nimbusly.isometrix.Sprite;
 
 import android.app.Activity;
@@ -41,52 +42,19 @@ public class SpriteActivity extends Activity {
 	/**
 	 * This tests different ways of displaying a sprite on the screen and how they compare
 	 */
-	public class CustomRenderer implements Renderer {
+	public class CustomRenderer extends GameRenderer {
 
-		private static final String TAG = "TestRenderer";
-		private Context context;
-		long startTime;
-		long frameCount = 0;
-		StringBuffer logMessage = new StringBuffer(100);
+		private static final String TAG = "CustomRenderer";
 		private Sprite sprite;
-		int screenWidth, screenHeight;
 		int vx = 3, vy = 2;
 		
 		public CustomRenderer(Context context) {
-			this.context = context;
-		}
-		
-		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-			gl.glEnable(GL10.GL_TEXTURE_2D);			//Enable Texture Mapping ( NEW )
-			gl.glShadeModel(GL10.GL_FLAT); 			//Enable Smooth Shading
-			gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f); 	//Black Background
-			gl.glDisable(GL10.GL_DEPTH_TEST); 			//Enables Depth Testing
-	        gl.glDisable(GL10.GL_DITHER);
-	        gl.glDisable(GL10.GL_LIGHTING);
-			gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
-			//mapTextureId = loadBitmap(context, gl, R.drawable.amelia);
-			startTime = System.currentTimeMillis();
+			super(context);
 		}
 		
 		public void onSurfaceChanged(GL10 gl, int width, int height) {
-			screenWidth = width;
-			screenHeight = height;
-			if(height == 0) { 						//Prevent A Divide By Zero By
-				height = 1; 						//Making Height Equal One
-			}
-			sprite = new Sprite(context, gl, R.drawable.amelia, width, height);
-			
-			gl.glViewport(0, 0, width, height); 	//Reset The Current Viewport
-	        gl.glMatrixMode(GL10.GL_PROJECTION); 	//Select The Projection Matrix
-			gl.glOrthof(0.0f, width, 0.0f, height, 0.0f, 1.0f);
-			gl.glLoadIdentity(); 					//Reset The Projection Matrix
-
-			gl.glMatrixMode(GL10.GL_MODELVIEW); 	//Select The Modelview Matrix
-			gl.glLoadIdentity(); 					//Reset The Modelview Matrix
-		}
-		
-		private void reportFramesPerSecond(long elapsed, long frameCount) {
-			Log.d(TAG, "1 frame took " + (elapsed / frameCount) + "ms; FPS = " + (frameCount * 1000 / elapsed));
+			super.onSurfaceChanged(gl, width, height);
+			sprite = new Sprite(context, gl, R.drawable.walking, 12, 8);
 		}
 		
 		private int bounce(int x, int vx, int max) {
@@ -94,18 +62,12 @@ public class SpriteActivity extends Activity {
 		}
 		
 		public void onDrawFrame(GL10 gl) {
-			long currentTime = System.currentTimeMillis();
-			long elapsed = currentTime - startTime;
-			if (currentTime > startTime + 10000) {
-				reportFramesPerSecond(elapsed, frameCount);
-				startTime = currentTime;
-				frameCount = 0;
-			}
-			frameCount += 1; 
-
+			super.onDrawFrame(gl);
 			sprite.x += vx; sprite.y += vy;
 			vx = bounce(sprite.x, vx, screenWidth-sprite.width);
 			vy = bounce(sprite.y, vy, screenHeight-sprite.height);
+			Log.i(TAG, "sprite at " + sprite.x + "," + sprite.y + " moving " + vx + "," + vy + " in " 
+					+ (screenWidth-sprite.width) + "x" + (screenHeight-sprite.height));
 			sprite.draw(gl);
 		}
 
