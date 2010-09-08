@@ -19,14 +19,14 @@ class DemoActivity extends Activity {
 	}
 	
 	var DEMOS: List[Demo] = null
-	
+		
     /** Called when the activity is first created. */
     override def onCreate(savedInstanceState: Bundle) {
 		DEMOS = List(
 			new Demo(new TextureDrawBackgroundDemo(this), "TextureDraw Background"),
 			new Demo(new TextureDrawSpriteDemo(this), "TextureDraw Sprites"),
 			new Demo(new VobSpriteDemo(this), "VOB Sprites")
-	)
+		)
 	
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -59,6 +59,7 @@ class DemoActivity extends Activity {
 		}
 		
 		glView = new GLSurfaceView(this)
+		glView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR)
 		renderer = demo.demoObject
 		glView.setRenderer(renderer)
 		setContentView(glView)

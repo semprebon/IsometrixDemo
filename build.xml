@@ -317,7 +317,7 @@
 
 	        <taskdef resource="scala/tools/ant/antlib.xml"
 	           classpath="tools/scala-compiler.jar:tools/scala-library.jar" />
-	        <scalac force="changed" deprecation="on"
+	        <scalac force="true" deprecation="on"
 	                destdir="${out.classes.absolute.dir}"
 	                bootclasspathref="android.target.classpath">
 	            <src path="${source.absolute.dir}" />
