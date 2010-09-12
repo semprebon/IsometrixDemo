@@ -16,7 +16,7 @@ class VobSpriteDemo(context: Context) extends GameRenderer(context) {
 	
 	override def onSurfaceChanged(gl: GL10, width: Int, height: Int) {
 		super.onSurfaceChanged(gl, width, height)
-		sprite = new Sprite(context, gl, R.drawable.simple_sprite, 96, 96)
+		sprite = new Sprite(context, gl, R.drawable.test_texture, 100, 100)
 		sprite.isVob = true
 	}
 	

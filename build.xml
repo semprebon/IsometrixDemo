@@ -43,7 +43,7 @@
         <pathelement path="${sdk.dir}/tools/lib/apkbuilder.jar" />
         <pathelement path="${sdk.dir}/tools/lib/jarutils.jar" />
     </path>
-
+	<echo message="sdk at ${sdk.dir}"/>
     <taskdef name="setup"
         classname="com.android.ant.SetupTask"
         classpathref="android.antlibs" />
