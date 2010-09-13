@@ -16,15 +16,17 @@ class VobSpriteDemo(context: Context) extends GameRenderer(context) {
 	
 	override def onSurfaceChanged(gl: GL10, width: Int, height: Int) {
 		super.onSurfaceChanged(gl, width, height)
-		sprite = new Sprite(context, gl, R.drawable.test_texture, 100, 100)
+		sprite = new Sprite(context, gl, R.drawable.test_animated_texture, 100, 100)
 		sprite.isVob = true
 	}
 	
 	override def onDrawFrame(gl: GL10) {
 		super.onDrawFrame(gl)
-		sprite.x += vx; sprite.y += vy;
+		//sprite.x += vx; sprite.y += vy;
 		vx = bounce(sprite.x, vx, screenWidth-sprite.width)
 		vy = bounce(sprite.y, vy, screenHeight-sprite.height)
+		sprite.frame = if (sprite.frame == 3) 0 else sprite.frame + 1
+		
 		sprite.draw(gl)
 	}
 }
